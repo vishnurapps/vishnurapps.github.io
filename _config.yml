@@ -107,7 +107,7 @@ analytics:
 # Site Author
 author:
   name             : "Vishnu R"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/images/profile.jpeg"
   bio              : "Machine learning engineer"
   location         : "Trivandrum, IN"
   email            :
@@ -293,3 +293,11 @@ defaults:
       comments: # true
       share: true
       related: true
+  
+  # _pages
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
