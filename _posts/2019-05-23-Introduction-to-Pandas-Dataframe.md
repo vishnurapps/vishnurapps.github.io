@@ -11,15 +11,13 @@ Data frame is a main object in pandas. It is used to represent data with rows an
 
 ### Creating a dataframe
 
-We can do this by reading data from a csv file
+We can create a dataframe in multiple ways. The simplest way is by reading data from a csv file
 
-```
-python
+```python
 import pandas as pd
 df = pd.read_csv("weather_data.csv")   #read weather.csv data
 df
 ```
-Now df contains the below information.
 
 |   | day      | temperature | windspeed | event |
 |---|----------|-------------|-----------|-------|
@@ -31,10 +29,9 @@ Now df contains the below information.
 | 5 | 1/6/2017 | 31          | 2         | Sunny |
 
 
-Another way is to read data from list of tuples.
+If we have the data as a list of tuples, we can conver that to a dataframe.
 
-```
-python
+```python
 #list of tuples
 
 weather_data = [('1/1/2017', 32, 6, 'Rain'),
@@ -48,7 +45,6 @@ df = pd.DataFrame(weather_data, columns=['day', 'temperature', 'windspeed', 'eve
 df
 ```
 
-This will generate a dataframe like below
 
 |   | day      | temp | windspeed | event |
 |---|----------|------|-----------|-------|
@@ -59,4 +55,60 @@ This will generate a dataframe like below
 | 4 | 1/5/2017 | 32   | 4         | Rain  |
 | 5 | 1/6/2017 | 31   | 2         | Sunny |
 
+
+To see the dimension of the dataframe we can use `df.shape`
+
+```python
+df.shape
+```
+
+This will return `(6,4)` as these are 6 columns and 4 rows. The index is not counted in column.
+
+We can use `df.head` to see the top 5 rows of the dataframe.
+
+```python
+df.head()
+```
+
+|   | day      | temperature | windspeed | event |
+|---|----------|-------------|-----------|-------|
+| 0 | 1/1/2017 | 32          | 6         | Rain  |
+| 1 | 1/2/2017 | 35          | 7         | Sunny |
+| 2 | 1/3/2017 | 28          | 2         | Snow  |
+| 3 | 1/4/2017 | 24          | 7         | Snow  |
+| 4 | 1/5/2017 | 32          | 4         | Rain  |
+
+Similar to `df.head()` there is a `df.tail()` which shows the last 5 elements
+
+```python
+df.tail()
+```
+
+|   | day      | temperature | windspeed | event |
+|---|----------|-------------|-----------|-------|
+| 1 | 1/2/2017 | 35          | 7         | Sunny |
+| 2 | 1/3/2017 | 28          | 2         | Snow  |
+| 3 | 1/4/2017 | 24          | 7         | Snow  |
+| 4 | 1/5/2017 | 32          | 4         | Rain  |
+| 5 | 1/6/2017 | 31          | 2         | Sunny |
+
+We can see that index 0 is not present in the above table.
+
+if we want to see the column header, we can use the `df.columns`
+
+```python
+df.columns
+```
+
+`Index(['day', 'temperature', 'windspeed', 'event'], dtype='object')`
+
+### Slicing 
+```python
+df[2:5]
+```
+day	temperature	windspeed	event
+2	1/3/2017	28	2	Snow
+3	1/4/2017	24	7	Snow
+4	1/5/2017	32	4	Rain
+This will return the rows from 2nd row till 4th(5-1) row
 
