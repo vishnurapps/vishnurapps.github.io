@@ -120,13 +120,13 @@ If we want to print a particular column, we can use the `df.columnname`
 ```python
 df.day      #print particular column data
 ```
-`0    1/1/2017
-1    1/2/2017
-2    1/3/2017
-3    1/4/2017
-4    1/5/2017
-5    1/6/2017
-Name: day, dtype: object`
+`0    1/1/2017`
+`1    1/2/2017`
+`2    1/3/2017`
+`3    1/4/2017`
+`4    1/5/2017`
+`5    1/6/2017`
+`Name: day, dtype: object`
 
 ```python
 df['day'] #df.day (both are same)
@@ -138,6 +138,7 @@ We can print multiple rows using this method.
 ```python
 df[['day', 'event']]
 ```
+
 |   | day      | event |
 |---|----------|-------|
 | 0 | 1/1/2017 | Rain  |
@@ -146,3 +147,5 @@ df[['day', 'event']]
 | 3 | 1/4/2017 | Snow  |
 | 4 | 1/5/2017 | Rain  |
 | 5 | 1/6/2017 | Sunny |
+
+
