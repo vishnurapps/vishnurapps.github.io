@@ -106,9 +106,43 @@ df.columns
 ```python
 df[2:5]
 ```
-day	temperature	windspeed	event
-2	1/3/2017	28	2	Snow
-3	1/4/2017	24	7	Snow
-4	1/5/2017	32	4	Rain
+
+|   | day      | temperature | windspeed | event |
+|---|----------|-------------|-----------|-------|
+| 2 | 1/3/2017 | 28          | 2         | Snow  |
+| 3 | 1/4/2017 | 24          | 7         | Snow  |
+| 4 | 1/5/2017 | 32          | 4         | Rain  |
+
 This will return the rows from 2nd row till 4th(5-1) row
 
+If we want to print a particular column, we can use the `df.columnname`
+
+```python
+df.day      #print particular column data
+```
+`0    1/1/2017
+1    1/2/2017
+2    1/3/2017
+3    1/4/2017
+4    1/5/2017
+5    1/6/2017
+Name: day, dtype: object`
+
+```python
+df['day'] #df.day (both are same)
+```
+This will also gets us the column day
+
+We can print multiple rows using this method.
+
+```python
+df[['day', 'event']]
+```
+|   | day      | event |
+|---|----------|-------|
+| 0 | 1/1/2017 | Rain  |
+| 1 | 1/2/2017 | Sunny |
+| 2 | 1/3/2017 | Snow  |
+| 3 | 1/4/2017 | Snow  |
+| 4 | 1/5/2017 | Rain  |
+| 5 | 1/6/2017 | Sunny |
