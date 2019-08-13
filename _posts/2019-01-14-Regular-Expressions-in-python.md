@@ -53,7 +53,132 @@ Output of the above code is:
 ((8, 10), 'Ha')
 [Finished in 0.1s]
 ```
+Here there are four Ha but only three were found. This is beacuse we have used the \b which means word boundary.If we have used \B (not a word boundary) we will get the second Ha in HaHa.
+```
+((5, 7), 'Ha')
+[Finished in 0.2s]
+```
+We use the ^ symbol to indicate the begining of a word. We can use it if we want to search something on the start of a sentence.
 
+```python
+import re
+
+text_to_search = "Starting of a sentence and it ends here"
+
+pattern = re.compile(r'^Start')
+matches = pattern.finditer(text_to_search)
+for match in matches:
+	print(match.span(), match.group())
+```
+
+Here the output is
+
+```
+((0, 5), 'Start')
+[Finished in 0.1s]
+```
+
+Here if we use somthing else lets say ^of, we wont get the output. Because its not in the begining.
+
+Similar to begining we have $ which indicates the end of a sentence.
+
+```python
+import re
+
+text_to_search = "Starting of a sentence and it ends here"
+
+pattern = re.compile(r'here$')
+matches = pattern.finditer(text_to_search)
+for match in matches:
+	print(match.span(), match.group())
+```
+
+Here the output is
+
+```
+((35, 39), 'here')
+[Finished in 0.1s]
+```
+
+In regular expressions, the . can match anything. We are going to search for a phone number. Phone number has 10 digits with a seperator after 3rd and 6th digit. Eg 147.236.5547
+
+```python
+import re
+
+text_to_search = '''
+123-456-7890
+123.345.4152
+985_456_1247
+'''
+
+pattern = re.compile(r'\d\d\d.\d\d\d.\d\d\d')
+matches = pattern.finditer(text_to_search)
+for match in matches:
+	print(match.span(), match.group())
+```
+
+The output will be
+```
+((1, 12), '123-456-789')
+((14, 25), '123.345.415')
+((27, 38), '985_456_124')
+[Finished in 0.1s]
+```
+
+Here the -, . and _ were taken as dot matches with anything. We are using \d to match a digit.
+
+Suppose we want only phone numbers that are seperated by . and -.How can we do that ?
+
+```python
+import re
+
+text_to_search = '''
+123-456-7890
+123.345.4152
+985_456_1247
+'''
+
+pattern = re.compile(r'\d\d\d[.-]\d\d\d[.-]\d\d\d')
+matches = pattern.finditer(text_to_search)
+for match in matches:
+	print(match.span(), match.group())
+```
+Here inside the square bracket, we are specifying that the characters after third and sixth digits shoud be a . or -.
+
+The output will be
+
+```
+((1, 12), '123-456-789')
+((14, 25), '123.345.415')
+[Finished in 0.1s]
+```
+We are putting new constraint. We need to see the numbers that are starting with 1 or 2. This can be done like below.
+
+```python
+import re
+
+text_to_search = '''
+123-456-7890
+723.345.4152
+285-456-1247
+'''
+
+pattern = re.compile(r'[12]\d\d[.-]\d\d\d[.-]\d\d\d')
+matches = pattern.finditer(text_to_search)
+for match in matches:
+	print(match.span(), match.group())
+```
+
+Here the first digit has to be 1 or 2.
+
+Output will be
+```
+((1, 12), '123-456-789')
+((27, 38), '285-456-124')
+[Finished in 0.1s]
+```
+
+See we are not considering the _. 
 import re
 
 text_to_search = '''
