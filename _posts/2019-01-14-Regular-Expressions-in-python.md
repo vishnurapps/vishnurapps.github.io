@@ -6,6 +6,10 @@ author_profile: true
 comments: true
 tags: 
 ---
+Regular expression is a special sequence of characters that helps us in matching or finding other strings or set of strings , using a specialized syntax held in a pattern.
+
+Python has a module called re which handles the regular expressions.
+	
 | Character | Description |
 | ---- | ---- |
 | .       | Any Character Except New Line |
@@ -21,7 +25,7 @@ tags:
 | $       | End of a String |
 | []      | Matches Characters in brackets |
 | [^ ]    | Matches Characters NOT in brackets |
-| |       | Either Or |
+| \|       | Either Or |
 | ( )     | Group |
 
 Quantifiers:
