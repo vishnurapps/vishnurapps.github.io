@@ -35,6 +35,25 @@ Quantifiers:
 {3}     - Exact Number
 {3,4}   - Range of Numbers (Minimum, Maximum)
 
+```python
+import re
+
+text_to_search = "Ha HaHa Hall"
+
+pattern = re.compile(r'\bHa')
+matches = pattern.finditer(text_to_search)
+for match in matches:
+	print(match.span(), match.group())
+```
+Output of the above code is:
+
+```
+((0, 2), 'Ha')
+((3, 5), 'Ha')
+((8, 10), 'Ha')
+[Finished in 0.1s]
+```
+
 import re
 
 text_to_search = '''
