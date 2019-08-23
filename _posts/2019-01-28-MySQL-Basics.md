@@ -2,7 +2,7 @@ The USE command is used to load a database
 eg:		USE imdb;
 
 To see the tables present in the database we can use the SHOW TABLES command.
-
+```sql
 mysql> SHOW TABLES;
 +------------------+
 | Tables_in_imdb   |
@@ -16,7 +16,7 @@ mysql> SHOW TABLES;
 | roles            |
 +------------------+
 7 rows in set (0.00 sec)
-
+```
 
 To see the datatypes in one table, we can use the DESCRIBE keyword.
 
