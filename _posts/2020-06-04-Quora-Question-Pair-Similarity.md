@@ -55,3 +55,67 @@ Now ten features are developed using the above generated counts. The SAFE_DIV is
     token_features[9] = (len(q1_tokens) + len(q2_tokens))/2
     return token_features
 ```
+The longest sub string is calculated using the `lcsubstrings`.
+
+```python
+strr = list(distance.lcsubstrings("My name is Vishnu", "My name is vidhya"))
+strr[0]
+```
+
+```
+'My name is '
+```
+We can use it to calculate the longest sub string ratio.
+
+```python
+# get the Longest Common sub string
+def get_longest_substr_ratio(a, b):
+    strs = list(distance.lcsubstrings(a, b))
+    if len(strs) == 0:
+        return 0
+    else:
+        return len(strs[0]) / (min(len(a), len(b)) + 1)
+```
+Now the `preprocess` function is applied on the question columns of the dataset.
+
+```python
+def extract_features(df):
+    # preprocessing each question
+    df["question1"] = df["question1"].fillna("").apply(preprocess)
+    df["question2"] = df["question2"].fillna("").apply(preprocess)
+```
+
+After preprocessing we call the `get_token_features` and extract the values.
+
+```python
+    print("token features...")
+    
+    # Merging Features with dataset
+    
+    token_features = df.apply(lambda x: get_token_features(x["question1"], x["question2"]), axis=1)
+    
+    df["cwc_min"]       = list(map(lambda x: x[0], token_features))
+    df["cwc_max"]       = list(map(lambda x: x[1], token_features))
+    df["csc_min"]       = list(map(lambda x: x[2], token_features))
+    df["csc_max"]       = list(map(lambda x: x[3], token_features))
+    df["ctc_min"]       = list(map(lambda x: x[4], token_features))
+    df["ctc_max"]       = list(map(lambda x: x[5], token_features))
+    df["last_word_eq"]  = list(map(lambda x: x[6], token_features))
+    df["first_word_eq"] = list(map(lambda x: x[7], token_features))
+    df["abs_len_diff"]  = list(map(lambda x: x[8], token_features))
+    df["mean_len"]      = list(map(lambda x: x[9], token_features))
+```
+After this the fuzzywizzy features are calculated and added in the dataframe.
+
+```python
+    print("fuzzy features..")
+
+    df["token_set_ratio"]       = df.apply(lambda x: fuzz.token_set_ratio(x["question1"], x["question2"]), axis=1)
+    # The token sort approach involves tokenizing the string in question, sorting the tokens alphabetically, and 
+    # then joining them back into a string We then compare the transformed strings with a simple ratio().
+    df["token_sort_ratio"]      = df.apply(lambda x: fuzz.token_sort_ratio(x["question1"], x["question2"]), axis=1)
+    df["fuzz_ratio"]            = df.apply(lambda x: fuzz.QRatio(x["question1"], x["question2"]), axis=1)
+    df["fuzz_partial_ratio"]    = df.apply(lambda x: fuzz.partial_ratio(x["question1"], x["question2"]), axis=1)
+    df["longest_substr_ratio"]  = df.apply(lambda x: get_longest_substr_ratio(x["question1"], x["question2"]), axis=1)
+    return df
+```
