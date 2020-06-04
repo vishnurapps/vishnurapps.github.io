@@ -119,3 +119,19 @@ After this the fuzzywizzy features are calculated and added in the dataframe.
     df["longest_substr_ratio"]  = df.apply(lambda x: get_longest_substr_ratio(x["question1"], x["question2"]), axis=1)
     return df
 ```
+
+We call the function `extract_features` on the dataframe and creates the new dataframe with all the features. The generated csv file is saved for future use.
+
+```python
+if os.path.isfile('nlp_features_train.csv'):
+    df = pd.read_csv("nlp_features_train.csv",encoding='latin-1')
+    df.fillna('')
+else:
+    print("Extracting features for train:")
+    df = pd.read_csv("train.csv")
+    df = extract_features(df)
+    df.to_csv("nlp_features_train.csv", index=False)
+df.head(2)
+```
+
+![alt text](https://github.com/vishnurapps/vishnurapps.github.io/blob/master/images/Pair%20plot.png)
