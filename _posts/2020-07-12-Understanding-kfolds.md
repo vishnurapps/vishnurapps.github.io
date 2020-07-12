@@ -28,7 +28,7 @@ X = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 y = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1]
 skf = StratifiedKFold(n_splits=4, shuffle=True)
 for train, test in skf.split(X, y):
-    print("%s %s" % (train, test))
+    print("%s %s" % (train_index, test_index))
 ```
 
 This will produce the below output.
