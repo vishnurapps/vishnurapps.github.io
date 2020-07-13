@@ -86,3 +86,52 @@ tensor([[[4., 1.],
          [5., 3.],
          [2., 1.]]])
 ```
+
+## Unsqueeze
+
+Unsqueeze is used to add one dimension.
+
+```python
+a = torch.tensor(range(10))
+a, a.shape
+```
+
+We get a tensor with a single dimension
+
+```shell
+(tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]), torch.Size([10]))
+```
+
+To add a dimension in row we can use like below.
+
+```python
+b = a.unsqueeze(0)
+b, b.shape
+```
+This will produce a row tensor with 10 columns
+
+```shell
+(tensor([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]), torch.Size([1, 10]))
+```
+To add a new dimension along column we can use like below.
+
+```python
+c = a.unsqueeze(1)
+c, c.shape
+```
+
+This will produce a tensor with 10 rows and one column
+
+```shell
+(tensor([[0],
+         [1],
+         [2],
+         [3],
+         [4],
+         [5],
+         [6],
+         [7],
+         [8],
+         [9]]),
+ torch.Size([10, 1]))
+```
