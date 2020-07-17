@@ -25,6 +25,7 @@ print("REPLICAS: ", strategy.num_replicas_in_sync)
 ## Loading the Competition Data
 - When used with TPUs, datasets are often serialized into TFRecords. 
 - This is a format convenient for distributing data to each of the TPUs cores.
+
 ```python
 ds_train = get_training_dataset()
 ds_valid = get_validation_dataset()
