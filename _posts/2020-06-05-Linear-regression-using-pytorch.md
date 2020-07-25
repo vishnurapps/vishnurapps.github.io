@@ -132,4 +132,73 @@ a = torch.tensor([[1,2],[6,8]], dtype=torch.float32)
 b = torch.tensor([[3,5],[3,5]], dtype=torch.float32)
 loss_fn(a,b)
 ```
-This will output `6.5` which is `mean(sum(2^2,3^2,3^2,3^2))`. It reduced to `mean(4,9,9,9)`. It is `31\4 = 7.75`
+This will output `7.75` which is `mean(sum(2^2,3^2,3^2,3^2))`. It reduced to `mean(4,9,9,9)`. It is `31\4 = 7.75`
+
+## Optimizer
+Instead of manually manipulating the model's weights & biases using gradients, we can use the optimizer `optim.SGD`. SGD stands for `stochastic gradient descent`. It is called stochastic because samples are selected in `batches` (often with random shuffling) instead of as a single group.
+
+```python
+# Define optimizer
+opt = torch.optim.SGD(model.parameters(), lr=1e-5)
+```
+
+Note that `model.parameters()` is passed as an argument to optim.SGD, so that the optimizer knows which matrices should be modified during the update step. Also, we can specify a learning rate which controls the amount by which the parameters are modified.
+
+## Train the model
+We are now ready to train the model. We'll follow the exact same process to implement gradient descent:
+
+- Generate predictions
+
+- Calculate the loss
+
+- Compute gradients w.r.t the weights and biases
+
+- Adjust the weights by subtracting a small quantity proportional to the gradient
+
+- Reset the gradients to zero
+
+Let's define a utility function fit which trains the model for a given number of epochs.
+
+```python
+# Utility function to train the model
+def fit(num_epochs, model, loss_fn, opt, train_dl):
+    
+    # Repeat for given number of epochs
+    for epoch in range(num_epochs):
+        
+        # Train with batches of data
+        for xb,yb in train_dl:
+            
+            # 1. Generate predictions
+            pred = model(xb)
+            
+            # 2. Calculate loss
+            loss = loss_fn(pred, yb)
+            
+            # 3. Compute gradients
+            loss.backward()
+            
+            # 4. Update parameters using gradients
+            opt.step()
+            
+            # 5. Reset the gradients to zero
+            opt.zero_grad()
+        
+        # Print the progress
+        if (epoch+1) % 10 == 0:
+            print('Epoch [{}/{}], Loss: {:.4f}'.format(epoch+1, num_epochs, loss.item()))
+```
+
+Some things to note above:
+
+- We use the data loader defined earlier to get batches of data for every iteration.
+
+- Instead of updating parameters (weights and biases) manually, we use opt.step to perform the update, and opt.zero_grad to reset the gradients to zero.
+
+- We've also added a log statement which prints the loss from the last batch of data for every 10th epoch, to track the progress of training. loss.item returns the actual value stored in the loss tensor.
+
+Let's train the model for 100 epochs.
+
+```python
+fit(100, model, loss_fn, opt)
+```
