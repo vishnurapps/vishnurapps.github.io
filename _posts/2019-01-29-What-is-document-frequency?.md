@@ -1,3 +1,12 @@
+## What is term frequency?
+
+Term frequency (TF) often used in Text Mining, NLP and Information Retrieval tells you how frequently a term occurs in a document. In the context natural language, terms correspond to words or phrases. Since every document is different in length, it is possible that a term would appear more often in longer documents than shorter ones. Thus, term frequency is often divided by the  the total number of terms in the document as a way of normalization.
+
+```shell
+TF(t) = (Number of times term t appears in a document) / (Total number of terms in the document).
+```
+## What is document frequency ?
+
 Document frequency is the number of documents containing a particular term. Based on Figure 1, the word cent has a document frequency of 1. Even though it appeared 3 times, it appeared 3 times in only one document.
 
 The word all on the other hand, has a document frequency of 5. Even though it appeared once in every document, it appeared in 5 documents.
