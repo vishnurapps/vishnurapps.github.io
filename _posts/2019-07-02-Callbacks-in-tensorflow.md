@@ -13,7 +13,7 @@ y_train = y_train/255.0
 class myCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
         if(logs.get('accuracy') > 0.09):
-            print("Reached 99% accuracy so cancelling trining!")
+            print("Reached 9% accuracy so cancelling trining!")
             self.model.stop_training = True
 
 callbacks = myCallback()
@@ -43,7 +43,7 @@ When the condition we specified met, we got the below message.
 
 ```shell
 Epoch 1/10
-1872/1875 [============================>.] - ETA: 0s - loss: 0.0019 - accuracy: 0.0986Reached 99% accuracy so cancelling trining!
+1872/1875 [============================>.] - ETA: 0s - loss: 0.0019 - accuracy: 0.0986Reached 9% accuracy so cancelling trining!
 1875/1875 [==============================] - 9s 5ms/step - loss: 0.0018 - accuracy: 0.0987
 ```
 
