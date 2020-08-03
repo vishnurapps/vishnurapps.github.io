@@ -166,3 +166,163 @@ the type of count vectorizer  <class 'scipy.sparse.csr.csr_matrix'>
 the shape of out text TFIDF vectorizer  (4986, 3144)
 the number of unique words including both unigrams and bigrams  3144
 ```
+
+## Word2Vec
+
+Here we can capture the semantic meaning of the words. We can approach this in two ways. If we have lot of data, we can create a model ourself. Else we can download existing models.
+
+### To make the model
+
+```python
+model=Word2Vec(list_of_sentance,min_count=5,size=50, workers=4)
+```
+### To use existing model
+
+```python
+model=KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
+```
+
+Lets see the words similar to dirty.
+```python
+w1 = "dirty"
+model.wv.most_similar (positive=w1)
+```
+
+The model gave us a list of words that are similar to dirty.
+
+```
+[('filthy', 0.871721625328064),
+ ('stained', 0.7922376990318298),
+ ('unclean', 0.7915753126144409),
+ ('dusty', 0.7772612571716309),
+ ('smelly', 0.7618112564086914),
+ ('grubby', 0.7483716011047363),
+ ('dingy', 0.7330487966537476),
+ ('gross', 0.7239381074905396),
+ ('grimy', 0.7228356599807739),
+ ('disgusting', 0.7213647365570068)]
+ ```
+ 
+ Now lets try with polite.
+ 
+ ```python
+ # look up top 6 words similar to 'polite'
+w1 = ["polite"]
+model.wv.most_similar (positive=w1,topn=6)
+```
+
+```
+[('courteous', 0.9174547791481018),
+ ('friendly', 0.8309274911880493),
+ ('cordial', 0.7990915179252625),
+ ('professional', 0.7945970892906189),
+ ('attentive', 0.7732747197151184),
+ ('gracious', 0.7469891309738159)]
+ ```
+ 
+ Now lets looks at words similar to france
+ 
+
+```python
+# look up top 6 words similar to 'france'
+w1 = ["france"]
+model.wv.most_similar (positive=w1,topn=6)
+```
+
+```
+[('canada', 0.6603403091430664),
+ ('germany', 0.6510637998580933),
+ ('spain', 0.6431018114089966),
+ ('barcelona', 0.61174076795578),
+ ('mexico', 0.6070996522903442),
+ ('rome', 0.6065913438796997)]
+ ```
+ 
+ Lets try with  shocked
+ 
+ ```python
+ # look up top 6 words similar to 'shocked'
+w1 = ["shocked"]
+model.wv.most_similar (positive=w1,topn=6)
+```
+
+```
+[('horrified', 0.80775386095047),
+ ('amazed', 0.7797470092773438),
+ ('astonished', 0.7748459577560425),
+ ('dismayed', 0.7680633068084717),
+ ('stunned', 0.7603034973144531),
+ ('appalled', 0.7466776371002197)]
+ ```
+ 
+Lets try to get everything related to stuff on the bed
+
+```python
+w1 = ["bed",'sheet','pillow']
+w2 = ['couch']
+model.wv.most_similar (positive=w1,negative=w2,topn=10)
+```
+
+```
+[('duvet', 0.7086508274078369),
+ ('blanket', 0.7016597390174866),
+ ('mattress', 0.7002605199813843),
+ ('quilt', 0.6868821978569031),
+ ('matress', 0.6777950525283813),
+ ('pillowcase', 0.6413239240646362),
+ ('sheets', 0.6382123827934265),
+ ('foam', 0.6322235465049744),
+ ('pillows', 0.6320573687553406),
+ ('comforter', 0.5972476601600647)]
+ ```
+ 
+ ## Similarity between two words in the vocabulary
+ 
+ ```python
+ # similarity between two different words
+model.wv.similarity(w1="dirty",w2="smelly")
+```
+```
+0.76181122646029453
+```
+
+```python
+# similarity between two identical words
+model.wv.similarity(w1="dirty",w2="dirty")
+```
+
+```
+1.0000000000000002
+```
+
+```python
+# similarity between two unrelated words
+model.wv.similarity(w1="dirty",w2="clean")
+```
+
+```
+0.25355593501920781
+```
+
+Under the hood, the above three snippets computes the cosine similarity between the two specified words using word vectors of each. From the scores, it makes sense that dirty is highly similar to smelly but dirty is dissimilar to clean. If you do a similarity between two identical words, the score will be 1.0 as the range of the cosine similarity score will always be between [0.0-1.0
+
+## Find the odd one out
+
+```python
+# Which one is the odd one out in this list?
+model.wv.doesnt_match(["cat","dog","france"])
+```
+```
+'france'
+```
+
+```python
+# Which one is the odd one out in this list?
+model.wv.doesnt_match(["bed","pillow","duvet","shower"])
+```
+
+```
+'shower'
+```
+
+
