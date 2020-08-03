@@ -325,4 +325,70 @@ model.wv.doesnt_match(["bed","pillow","duvet","shower"])
 'shower'
 ```
 
+## Average W2V
+
+```python
+# average Word2Vec
+# compute average word2vec for each review.
+sent_vectors = []; # the avg-w2v for each sentence/review is stored in this list
+for sent in tqdm(list_of_sentance): # for each review/sentence
+    sent_vec = np.zeros(50) # as word vectors are of zero length 50, you might need to change this to 300 if you use google's w2v
+    cnt_words =0; # num of words with a valid vector in the sentence/review
+    for word in sent: # for each word in a review/sentence
+        if word in w2v_words:
+            vec = w2v_model.wv[word]
+            sent_vec += vec
+            cnt_words += 1
+    if cnt_words != 0:
+        sent_vec /= cnt_words
+    sent_vectors.append(sent_vec)
+print(len(sent_vectors))
+print(len(sent_vectors[0]))
+```
+We get a list of sentences. For every word in sentence, we check if the word is in the w2v dictionary. If its present, we add the vector to sent_vec and increment the value of cnt_words. Then at the end we divide the sent_vec by the count.
+
+```
+4986
+50
+```
+
+## TF-IDF weighted W2V
+
+```python
+# S = ["abc def pqr", "def def def abc", "pqr pqr def"]
+model = TfidfVectorizer()
+model.fit(preprocessed_reviews)
+# we are converting a dictionary with word as a key, and the idf as a value
+dictionary = dict(zip(model.get_feature_names(), list(model.idf_)))
+```
+
+After the first step we have a dictionary whose key is the word and value is the idf value.
+
+```
+# TF-IDF weighted Word2Vec
+tfidf_feat = model.get_feature_names() # tfidf words/col-names
+# final_tf_idf is the sparse matrix with row= sentence, col=word and cell_val = tfidf
+
+tfidf_sent_vectors = []; # the tfidf-w2v for each sentence/review is stored in this list
+row=0;
+for sent in tqdm(list_of_sentance): # for each review/sentence 
+    sent_vec = np.zeros(50) # as word vectors are of zero length
+    weight_sum =0; # num of words with a valid vector in the sentence/review
+    for word in sent: # for each word in a review/sentence
+        if word in w2v_words and word in tfidf_feat:
+            vec = w2v_model.wv[word]
+            #tf_idf = tf_idf_matrix[row, tfidf_feat.index(word)]
+            # to reduce the computation we are 
+            # dictionary[word] = idf value of word in whole courpus
+            # sent.count(word) = tf valeus of word in this review
+            tf_idf = dictionary[word]*(sent.count(word)/len(sent))
+            sent_vec += (vec * tf_idf)
+            weight_sum += tf_idf
+    if weight_sum != 0:
+        sent_vec /= weight_sum
+    tfidf_sent_vectors.append(sent_vec)
+    row += 1
+```
+
+We have a tfidf_feat which contain all the words. For every review/sentence we create a vector of length 50. This is called sent_vec also we make a model weight called weight_sum. If word is present in tfidf_feat and word2vec, we get the vector from w2v. tf_idf is calculated and vector is multiplied with that and finially divided by the weighted sum.
 
