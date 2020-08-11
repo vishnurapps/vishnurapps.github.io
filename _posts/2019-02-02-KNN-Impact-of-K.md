@@ -34,8 +34,8 @@ for i in [1, 5, 15, 30, 45]:
     knn_comparision(data, i)
 ```
 
-![knn-part-1](https://github.com/vishnurapps/vishnurapps.github.io/blob/master/images/knn-part1.png)
-![knn-part-2](https://github.com/vishnurapps/vishnurapps.github.io/blob/master/images/knn-part2.png)
+![knn-part-1](../images/knn-part1.png)
+![knn-part-2](../images/knn-part2.png)
 
 - From this plots we can see that the decision boundary become more and more smooth with increase in K
 - When K was 1 a single point has influced the decision boundary 
